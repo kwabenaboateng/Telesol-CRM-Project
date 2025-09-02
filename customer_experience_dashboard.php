@@ -151,12 +151,20 @@ $conn->close();
 
 <style>
 :root {
-  --primary: #4a6bff;
-  --accent: #ff4a6b;
-  --dark: #2c3e50;
-  --light: #f8f9fa;
+  --bg: #818fa4ff;
+  /* --background: #f7fafc; */
+  --background: #c9d1d6ff;
+  --deep-bg: #425779ff;
+  --white: #ffffff;
   --gray: #e9ecef;
-  --success: #28a745;
+  /* --off-white: #ffffee; */
+  --sidebar: #2c4b61ff;
+  /* --dark: #102940ff; */
+  --dark: #263f56ff;
+  --subtitle: #364253ff;
+  --border-line: #cccccc;
+  --deep-blue: #0a234bff;
+   --success: #28a745;
   --error: #dc3545;
 }
 
@@ -168,7 +176,8 @@ $conn->close();
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
+  /* background-color: #f8f9fa; */
+  background: var(--background);
   color: #333;
   line-height: 1.6;
   min-height: 100vh;
@@ -179,7 +188,7 @@ body {
 .sidebar {
   width: 260px;
   /* background: var(--dark); */
-  background: #185e73ff;
+  background: var(--sidebar);
   color: white;
   padding: 1rem;
   height: 100vh;
@@ -195,7 +204,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -296,7 +305,7 @@ body {
 
 /* Main Content */
 .main-content {
-  margin-left: 270px;
+  margin-left: 260px;
   padding: 1.5rem;
   height: 100vh;
   display: flex;
@@ -308,7 +317,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .page-title {
@@ -316,25 +325,25 @@ body {
   font-weight: 600;
   color: var(--dark);
   margin: 0;
-  margin-top: -30px;
-  margin-bottom: -25px;
+  margin-top: -50px;
+  margin-bottom: -35px;
 }
 
 /* Cards */
 .stats-cards-row {
   display: flex;
   gap: 1rem;
-  margin-top: -20px;
+  margin-top: -30px;
   margin-bottom: 1.5rem;
 }
 
 .stats-card {
   background: white;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   flex: 1;
-  /* height: 140px; */
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -342,15 +351,17 @@ body {
 }
 
 .stats-card .card-title {
-  font-size: 1rem;
-  color: #6c757d;
+  font-size: 1.09rem;
+  color: var(--dark);
+  /* color: #6c757d; */
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-top: -0.8rem;
+  margin-bottom: 0.7rem;
 }
 
 .stats-card .card-value {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.9rem;
+  font-weight: 800;
   color: var(--primary);
 }
 
@@ -364,7 +375,7 @@ body {
 .chart-container {
   position: relative;
   width: 100%;
-  height: 150px;
+  height: 120px;
 }
 
 /* Table Container */
@@ -375,8 +386,9 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   padding: 1rem;
-  max-height: calc(100vh - 390px);
+  max-height: calc(100vh - 330px);
   width: 1200px;
+  height: 800px;
 }
 
 /* Sticky table header */
@@ -388,12 +400,13 @@ body {
 .data-table thead th {
   position: sticky;
   top: 0;
-  background-color: white;
-  padding: 0.75rem;
+  background-color: var(--dark);
+  padding-top: 10px;
+  padding: 0.7rem;
   font-weight: 600;
-  color: var(--dark);
-  border-bottom: 2px solid #f1f3f9;
-  z-index: 10;
+  color: var(--white);
+  /* border-bottom: 1px solid #f1f3f9; */
+  z-index: 5;
 }
 
 .data-table tbody tr:hover {
@@ -402,7 +415,7 @@ body {
 
 .data-table tbody td {
   padding: 0.75rem;
-  border-bottom: 1px solid #f1f3f9;
+  border-bottom: 0.2px solid #f1f3f9;
   vertical-align: middle;
 }
 
@@ -431,37 +444,44 @@ body {
     max-height: none;
   }
 }
-
 </style>
 
 </head>
 <body>
   <div class="d-flex">
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="company-logo">
-          <img src="Telesol_logo.jpeg" alt="Company Logo" />
+          <img src="/images/logo/Telesol_logo.jpeg" alt="Company Logo" />
         </div>
         <div class="company-slogan">Customer Relationship Management</div>
       </div>
+
       <nav class="nav-menu">
-        <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'main-menu.php' ? 'active' : '' ?>">
+        <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'main-menu.php' ? 'active' : '' ?>">
           <i class="bi bi-list"></i> Menu
         </a>
-        <a href="log_ticket.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'log_ticket.php' ? 'active' : '' ?>">
-          <i class="bi bi-journal-plus"></i> Log Issue
+        <a href="log_ticket.php" class="nav-link">
+          <i class="bi bi-journal-plus"></i> Log Ticket
         </a>
-        <a href="log_installations.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'log_installations.php' ? 'active' : '' ?>">
+        <a href="view_tickets.php" class="nav-link">
+          <i class="bi bi-hdd-network"></i> View Tickets
+        </a>
+        <a href="log_installations.php" class="nav-link">
           <i class="bi bi-journal-plus"></i> Log Installation
         </a>
-        <a href="customer_experience_dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'customer_experience_dashboard.php' ? 'active' : '' ?>">
+        <a href="view_installations.php" class="nav-link">
+          <i class="bi bi-hdd-network"></i> View Installations
+        </a>
+        <a href="customer_experience_dashboard.php" class="nav-link active">
           <i class="bi bi-speedometer2"></i> Customer Experience
         </a>
-        <a href="field_installations.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'field_installations.php' ? 'active' : '' ?>">
+        <a href="field_installations.php" class="nav-link">
           <i class="bi bi-hdd-network"></i> Field Installations
         </a>
       </nav>
+
       <div class="sidebar-footer">
         <button class="btn btn-back" onclick="window.history.back()">
           <i class="bi bi-arrow-left"></i> Back
@@ -473,6 +493,7 @@ body {
         </form>
       </div>
     </aside>
+  </div>
 
     <!-- Main Content -->
     <div class="main-content">

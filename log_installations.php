@@ -152,14 +152,20 @@ $conn->close();
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
 :root {
-  --primary: #4a6bff;
-  --accent: #ff4a6b;
-  --dark: #2c3e50;
-  --light: #f8f9fa;
-  --gray: #e9ecef;
-  --success: #28a745;
-  --error: #dc3545;
-}
+    --bg: #818fa4ff;
+    --background: #f0f0f0ff;
+    --deep-bg: #425779ff;
+    --white: #ffffff;
+    --gray: #e9ecef;
+    --sidebar: #2c4b61ff;
+    --dark: #395b74ff;
+    --subtitle: #364253ff;
+    --border-line: #cccccc;
+    --deep-blue: #0a234bff;
+    --success: #28a745;
+    --error: #dc3545;
+    --light-green: #3ad809ff;
+  }
 
 * {
   box-sizing: border-box;
@@ -177,122 +183,124 @@ body {
   flex-direction: row;
 }
 
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
-  width: 280px;
-  background: var(--dark);
-  color: white;
-  padding: 1rem;
-  height: 100vh;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+ width: 260px;
+ background-color: var(--sidebar);
+ font-size: 16px;
+ font-weight: 500;
+ font-family: inherit;
+ color: white;
+ padding: 1rem;
+ height: 100vh;
+ position: fixed;
+ display: flex;
+ flex-direction: column;
+ box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+ z-index: 100;
 }
 
 .sidebar-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .company-logo {
-  width: 140px;
-  height: 70px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+ width: 140px;
+ height: 70px;
+ background: white;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-bottom: 0.1rem;
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
 }
 
 .company-logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+ max-width: 100%;
+ max-height: 100%;
+ object-fit: contain;
 }
 
 .company-slogan {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 0.25rem;
-  text-align: center;
+ font-size: 1rem;
+ color: rgba(255, 255, 255, 0.7);
+ margin-top: 0.25rem;
+ text-align: center;
 }
 
 .nav-menu {
-  flex-grow: 1;
+ flex-grow: 1;
 }
 
 .nav-link {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
-  transition: all 0.3s ease;
+ display: flex;
+ align-items: center;
+ padding: 0.5rem 1rem;
+ color: rgba(255, 255, 255, 0.8);
+ text-decoration: none;
+ border-radius: 6px;
+ margin-bottom: 0.5rem;
+ transition: all 0.3s ease;
 }
 
 .nav-link i {
-  margin-right: 0.75rem;
-  font-size: 1rem;
-  color: var(--accent);
-  margin-bottom: 0.010rem;
+ margin-right: 0.75rem;
+ font-size: 1.3rem;
+ color: var(--light-green);
+ margin-bottom: 0.010rem;
 }
 
-.nav-link:hover, 
+.nav-link:hover,
 .nav-link.active {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+ background-color: rgba(255, 255, 255, 0.1);
+ color: white;
 }
 
 .nav-link.active {
-  font-weight: 600;
+ font-weight: 600;
 }
 
 .sidebar-footer {
-  margin-top: auto;
+ margin-top: auto;
 }
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ padding: 0.75rem 1.5rem;
+ border-radius: 6px;
+ font-weight: 500;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ border: none;
 }
 
 .btn-back {
-  background: white;
-  color: var(--dark);
-  width: 100%;
-  margin-bottom: 1rem;
+ background: white;
+ color: var(--dark);
+ width: 100%;
+ margin-bottom: 1rem;
 }
 
 .btn-back:hover {
-  background: var(--gray);
+ background: var(--gray);
 }
 
 .btn-logout {
-  background: var(--error);
-  color: white;
-  width: 100%;
+ background: var(--error);
+ color: white;
+ width: 100%;
 }
 
 .btn-logout:hover {
-  background: #c82333;
+ background: #c82333;
 }
 
 /* Main Content */
@@ -446,53 +454,50 @@ textarea.form-control {
 </style>
 </head>
 <body>
-<!-- Sidebar -->
-<aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="company-logo">
-        <img src="Telesol_logo.jpeg" alt="Company Logo" />
-      </div>
-      <div class="company-slogan">Customer Relationship Management</div>
-    </div>
-
-    <nav class="nav-menu">
-      <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'main-menu.php' ? 'active' : '' ?>">
-        <i class="bi bi-list"></i> Menu
-      </a>
-
-      <a href="log_issue.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'customer_experience.php' ? 'active' : '' ?>">
-        <i class="bi bi-journal-plus"></i> Log Issue
-      </a>
-
-      <a href="view_tickets.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'customer_experience.php' ? 'active' : '' ?>">
-        <i class="bi bi-journal-plus"></i> View Ticke
-      </a>
-
-      <a href="log_installations.php" class="nav-link active <?= basename($_SERVER['PHP_SELF']) == 'customer_experience.php' ? 'active' : '' ?>">
-        <i class="bi bi-journal-plus"></i> Log Installation
-      </a>
-
-      <a href="customer_experience.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'customer_experience.php' ? 'active' : '' ?>">
-        <i class="bi bi-speedometer2"></i> Customer Experience
-      </a>
-
-      <a href="field_installations.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'field_installations.php' ? 'active' : '' ?>">
-        <i class="bi bi-hdd-network"></i> Field Installations
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <button class="btn btn-back" onclick="window.history.back()">
-        <i class="bi bi-arrow-left"></i> Back
-      </button>
-
-      <form action="logout.php" method="POST">
-        <button type="submit" class="btn btn-logout">
-          <i class="bi bi-box-arrow-right"></i> Logout
-        </button>
-      </form>
-    </div>
-</aside>
+ <!-- Sidebar -->
+ <div class="d-flex">
+   <aside class="sidebar" role="complementary" aria-label="Sidebar navigation">
+     <div class="sidebar-header">
+       <div class="company-logo" aria-hidden="true">
+         <img src="/images/logo/Telesol_logo.jpeg" alt="Company Logo" />
+       </div>
+       <div class="company-slogan">Customer Relationship Management</div>
+     </div>
+     <nav class="nav-menu" role="navigation" aria-label="Main menu">
+       <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>">
+         <i class="bi bi-list" aria-hidden="true"></i> Menu
+       </a>
+       <a href="log_ticket.php" class="nav-link">
+         <i class="bi bi-journal-plus" aria-hidden="true"></i> Log Ticket
+       </a>
+       <a href="view_tickets.php" class="nav-link active">
+         <i class="bi bi-hdd-network" aria-hidden="true"></i> View Tickets
+       </a>
+       <a href="log_installations.php" class="nav-link">
+         <i class="bi bi-journal-plus" aria-hidden="true"></i> Log Installation
+       </a>
+       <a href="view_installations.php" class="nav-link">
+         <i class="bi bi-hdd-network" aria-hidden="true"></i> View Installations
+       </a>
+       <a href="customer_experience_dashboard.php" class="nav-link">
+         <i class="bi bi-speedometer2" aria-hidden="true"></i> Customer Experience
+       </a>
+       <a href="field_installations.php" class="nav-link">
+         <i class="bi bi-hdd-network" aria-hidden="true"></i> Field Installations
+       </a>
+     </nav>
+     <div class="sidebar-footer">
+       <button class="btn btn-back" type="button" onclick="window.history.back()" aria-label="Go back">
+         <i class="bi bi-arrow-left" aria-hidden="true"></i> Back
+       </button>
+       <form action="logout.php" method="POST">
+         <button type="submit" class="btn btn-logout">
+           <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Logout
+         </button>
+       </form>
+     </div>
+   </aside>
+ </div>
 
 <!-- Main Content -->
 <main class="main-content">

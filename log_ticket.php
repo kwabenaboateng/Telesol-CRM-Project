@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insert into database if no validation errors
     if (empty($errors)) {
         $stmt = $conn->prepare(
-            "INSERT INTO tickets 
+            "INSERT INTO tickets
             (customer_name, contact_number, email, location, issue_type, service_type, attachment_path, comments, escalate, escalated_department, created_by, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())"
         );
@@ -140,39 +140,52 @@ function esc($str) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Log Ticket</title>
+    <title>Telesol CRM - Log Ticket</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <!-- <link rel="stylesheet" href="log_issue1.css" /> -->
 </head>
 
 <style>
     :root {
-        --primary: #4a6bff;
-        --accent: #ff4a6b;
-        --dark: #2c3e50;
-        --light: #f8f9fa;
-        --gray: #e9ecef;
-        --success: #28a745;
-        --error: #dc3545;
-    }
+    --bg: #818fa4ff;
+    --background: #f0f0f0ff;
+    --deep-bg: #425779ff;
+    --white: #ffffff;
+    --gray: #e9ecef;
+    --sidebar: #2c4b61ff;
+    --dark: #395b74ff;
+    --subtitle: #364253ff;
+    --border-line: #cccccc;
+    --deep-blue: #0a234bff;
+    --success: #28a745;
+    --error: #dc3545;
+    --light-green: #37ad13ff;
+    /* --light-green: #3ad809ff; */
+  }
 
-    /* Your entire CSS unchanged ... */
-    /* Reset and base structure */
+     /* Reset */
+    *,*::before,*::after {
+        box-sizing: border-box;
+    }
+    
     body {
+        margin: 0; 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--light);
         color: #333;
         min-height: 100vh;
         display: flex;
-        margin: 0;
+        flex-direction: row;
+        user-select: text;
     }
 
-    /* === SIDEBAR - DO NOT EDIT === */
+    /* Sidebar */
     .sidebar {
-        width: 240px;
-        background: var(--dark);
+        width: 260px;
+        background-color: var(--sidebar);
+        font-size: 16px;
+        font-weight: 500;
+        font-family: inherit;
         color: white;
         padding: 1rem;
         height: 100vh;
@@ -180,22 +193,41 @@ function esc($str) {
         display: flex;
         flex-direction: column;
         box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+        z-index: 100;
     }
 
     .sidebar-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin-bottom: 1rem;
-        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .sidebar-header img {
-        max-width: 140px;
+    .company-logo {
+        width: 140px;
+        height: 70px;
+        background: white;
         border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
     }
 
-    .sidebar-slogan {
+    .company-logo img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .company-slogan {
+        font-size: 1rem;
         color: rgba(255, 255, 255, 0.7);
         margin-top: 0.25rem;
-        font-size: 1rem;
+        text-align: center;
     }
 
     .nav-menu {
@@ -203,19 +235,30 @@ function esc($str) {
     }
 
     .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
         color: rgba(255, 255, 255, 0.8);
         text-decoration: none;
-        padding: 0.7rem 1rem;
-        display: block;
         border-radius: 6px;
         margin-bottom: 0.5rem;
-        transition: background-color 0.3s, color 0.3s;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link i {
+        margin-right: 0.75rem;
+        font-size: 1.3rem;
+        color: var(--light-green);
+        margin-bottom: 0.010rem;
     }
 
     .nav-link:hover,
     .nav-link.active {
-        background: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.1);
         color: white;
+    }
+
+    .nav-link.active {
         font-weight: 600;
     }
 
@@ -228,17 +271,17 @@ function esc($str) {
         align-items: center;
         justify-content: center;
         padding: 0.75rem 1.5rem;
-        width: 100%;
         border-radius: 6px;
-        font-weight: 600;
+        font-weight: 500;
         cursor: pointer;
+        transition: all 0.3s ease;
         border: none;
-        transition: background 0.3s, color 0.3s;
     }
 
     .btn-back {
         background: white;
         color: var(--dark);
+        width: 100%;
         margin-bottom: 1rem;
     }
 
@@ -249,6 +292,7 @@ function esc($str) {
     .btn-logout {
         background: var(--error);
         color: white;
+        width: 100%;
     }
 
     .btn-logout:hover {
@@ -257,26 +301,36 @@ function esc($str) {
 
     /* === MAIN CONTENT AREA === */
     .main-content {
-        margin-left: 280px;
+        margin-left: 240px;
         padding: 2.5rem 2rem;
         flex: 1;
         transition: margin 0.3s;
+        background-color: var(--background);
+    }
+
+    .main-content-header h1{
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-top: -20px;
+        margin-bottom: 1rem;
+        margin-left: 25px;
     }
 
     .card {
-        background: #fff;
-        border-radius: 14px;
+        background: var(--white);
+        border-radius: 5px;
         box-shadow: 0 4px 20px rgba(44, 62, 80, 0.08);
         padding: 2rem 2rem;
-        max-width: 1000px;
-        margin-top: -20px;
+        max-width: 1100px;
+        margin-top: 5px;
         margin-left: 25px;
-        /* margin: 2.5rem auto; */
         transition: box-shadow 0.3s;
     }
 
     .card-header {
         margin-bottom: 0.5rem;
+        color: var(--dark);
     }
 
     .card-title {
@@ -289,18 +343,17 @@ function esc($str) {
     }
 
     .card-subtitle {
-        color: #6c757d;
-        font-size: 1rem;
-        margin-top: 0.7rem;
-        margin-bottom: 0.2rem;
-        margin-left: 0;
+        color: var(--subtitle);
+        font-size: 1.1rem;
+        margin-top: -0.9rem;
+        margin-bottom: 0.8rem;
     }
 
     /* Grid Layout for Forms */
     .form-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1rem 1.5rem;
+        gap: 1rem 1.2rem;
     }
 
     .form-group {
@@ -318,7 +371,7 @@ function esc($str) {
 
     .form-control {
         width: 100%;
-        height: 2.4rem;
+        height: 2.2rem;
         padding: 0.5rem 0.8rem;
         font-size: 1rem;
         border: 1px solid var(--gray);
@@ -376,13 +429,14 @@ function esc($str) {
 
     /* Submit Button */
     .btn-submit {
-        background: linear-gradient(135deg, var(--primary), var(--accent));
+        /* background: linear-gradient(135deg, var(--primary), var(--accent)); */
+        background: var(--dark);
         color: white;
-        font-weight: 700;
-        font-size: 1.15rem;
-        padding: 1rem 0;
+        font-weight: 600;
+        font-size: 1.05rem;
+        padding: 0.6rem 0;
         border-radius: 8px;
-        margin-top: 1rem;
+        margin-top: 0.4rem;
         grid-column: 1 / -1;
         border: none;
         cursor: pointer;
@@ -484,56 +538,61 @@ function esc($str) {
 </style>
 
 <body>
+
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="company-logo">
-                <img src="Telesol_logo.jpeg" alt="Company Logo" />
+    <div class="d-flex">
+        <aside class="sidebar" role="complementary" aria-label="Sidebar navigation">
+            <div class="sidebar-header">
+                <div class="company-logo" aria-hidden="true">
+                    <img src="/images/logo/Telesol_logo.jpeg" alt="Company Logo" />
+                </div>
+                <div class="company-slogan">Customer Relationship Management</div>
             </div>
-            <div class="company-slogan">Customer Relationship Management</div>
-        </div>
-
-        <nav class="nav-menu">
-            <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'main-menu.php' ? 'active' : '' ?>">
-                <i class="bi bi-list"></i> Menu
-            </a>
-            <a href="log_issue.php" class="nav-link active">
-                <i class="bi bi-journal-plus"></i> Log Ticket
-            </a>
-            <a href="view_tickets.php" class="nav-link">
-                <i class="bi bi-hdd-network"></i> View Tickets
-            </a>
-            <a href="log_installations.php" class="nav-link">
-                <i class="bi bi-journal-plus"></i> Log Installation
-            </a>
-            <a href="view_installations.php" class="nav-link">
-                <i class="bi bi-hdd-network"></i> View Installations
-            </a>
-            <a href="customer_experience.php" class="nav-link">
-                <i class="bi bi-speedometer2"></i> Customer Experience
-            </a>
-            <a href="field_installations.php" class="nav-link">
-                <i class="bi bi-hdd-network"></i> Field Installations
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <button class="btn btn-back" onclick="window.history.back()">
-                <i class="bi bi-arrow-left"></i> Back
-            </button>
-            <form action="logout.php" method="POST">
-                <button type="submit" class="btn btn-logout">
-                    <i class="bi bi-box-arrow-right"></i> Logout
+            <nav class="nav-menu" role="navigation" aria-label="Main menu">
+                <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>">
+                    <i class="bi bi-list" aria-hidden="true"></i> Menu
+                </a>
+                <a href="log_ticket.php" class="nav-link active">
+                    <i class="bi bi-journal-plus" aria-hidden="true"></i> Log Ticket
+                </a>
+                <a href="view_tickets.php" class="nav-link">
+                    <i class="bi bi-hdd-network" aria-hidden="true"></i> View Tickets
+                </a>
+                <a href="log_installations.php" class="nav-link">
+                    <i class="bi bi-journal-plus" aria-hidden="true"></i> Log Installation
+                </a>
+                <a href="view_installations.php" class="nav-link">
+                    <i class="bi bi-hdd-network" aria-hidden="true"></i> View Installations
+                </a>
+                <a href="customer_experience_dashboard.php" class="nav-link">
+                    <i class="bi bi-speedometer2" aria-hidden="true"></i> Customer Experience
+                </a>
+                <a href="field_installations.php" class="nav-link">
+                    <i class="bi bi-hdd-network" aria-hidden="true"></i> Field Installations
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-back" type="button" onclick="window.history.back()" aria-label="Go back">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i> Back
                 </button>
-            </form>
-        </div>
-    </aside>
+                <form action="logout.php" method="POST">
+                    <button type="submit" class="btn btn-logout">
+                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content" role="main" aria-label="Log New Issue Form">
+        <div class="main-content-header">
+            <h1>Log Ticket</h1>
+        </div>
+
         <div class="card">
             <header class="card-header">
-                <h1 class="card-title">Log Ticket</h1>
+                <!-- <h1 class="card-title">Log Ticket</h1> -->
                 <p class="card-subtitle">Please fill in the details below</p>
             </header>
 

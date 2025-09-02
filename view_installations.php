@@ -136,96 +136,166 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
 
 <style>
   :root {
-    --primary: #4a6bff;
-    --accent: #ff4a6b;
-    --dark: #20306f;
-    --light: #f8f9fa;
-    --gray-light: #e9ecef;
-    --gray-dark: #6c757d;
+    --bg: #818fa4ff;
+    /* --background: #c9d1d6ff; */
+    --background: #f0f0f0ff;
+    --deep-bg: #425779ff;
+    --white: #ffffff;
+    --gray: #e9ecef;
+    --sidebar: #2c4b61ff;
+    --dark: #395b74ff;
+    --subtitle: #364253ff;
+    --border-line: #cccccc;
+    --deep-blue: #0a234bff;
     --success: #28a745;
-    --warning: #ffc107;
     --error: #dc3545;
-    --font-family: 'Inter', sans-serif;
-  }
-  
-  /* Reset & Base */
-  * {
-    box-sizing: border-box;
-  }
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: var(--font-family);
-    background-color: var(--light);
-    color: #333;
-    overflow: hidden; /* prevent body scroll */
+    --light-green: #3ad809ff;
   }
 
-  /* Layout */
-  body {
-    display: flex;
-    height: 100vh;
-  }
+/* Reset */
+*,*::before,*::after {
+ box-sizing: border-box;
+}
+body {
+ margin: 0; 
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ color: #333;
+ min-height: 100vh;
+ display: flex;
+ flex-direction: row;
+ user-select: text;
+}
 
-  /* Sidebar */
-  .sidebar {
-    width: 300px;
-    background-color: var(--dark);
-    height: 100vh;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.15);
-    padding: 1.5rem 2rem;
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-  }
-  .sidebar-logo {
-    margin-bottom: 2rem;
-  }
-  .sidebar-logo img {
-    max-height: 40px;
-    display: block;
-  }
-  .sidebar-menu {
-    flex-grow: 1;
-  }
-  .sidebar-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .sidebar-menu li {
-    margin-bottom: 1rem;
-  }
-  .sidebar-menu a {
-    text-decoration: none;
-    color: var(--gray-light);
-    font-weight: 600;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  .sidebar-menu a:hover,
-  .sidebar-menu a.active {
-    background-color: rgba(74,107,255,0.15);
-    color: var(--primary);
-  }
-  .sidebar-menu a i {
-    margin-right: 12px;
-    font-size: 1.3rem;
-  }
+/* Sidebar */
+.sidebar {
+ width: 260px;
+ background-color: var(--sidebar);
+ font-size: 16px;
+ font-weight: 500;
+ font-family: inherit;
+ color: white;
+ padding: 1rem;
+ height: 100vh;
+ position: fixed;
+ display: flex;
+ flex-direction: column;
+ box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+ z-index: 100;
+}
 
-  /* Main content */
-  main.main-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 2.5rem 3rem;
-    overflow: hidden; /* prevent main content scroll */
-  }
+.sidebar-header {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.company-logo {
+ width: 140px;
+ height: 70px;
+ background: white;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-bottom: 0.1rem;
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
+}
+
+.company-logo img {
+ max-width: 100%;
+ max-height: 100%;
+ object-fit: contain;
+}
+
+.company-slogan {
+ font-size: 1rem;
+ color: rgba(255, 255, 255, 0.7);
+ margin-top: 0.25rem;
+ text-align: center;
+}
+
+.nav-menu {
+ flex-grow: 1;
+}
+
+.nav-link {
+ display: flex;
+ align-items: center;
+ padding: 0.5rem 1rem;
+ color: rgba(255, 255, 255, 0.8);
+ text-decoration: none;
+ border-radius: 6px;
+ margin-bottom: 0.5rem;
+ transition: all 0.3s ease;
+}
+
+.nav-link i {
+ margin-right: 0.75rem;
+ font-size: 1.3rem;
+ color: var(--light-green);
+ margin-bottom: 0.010rem;
+}
+
+.nav-link:hover,
+.nav-link.active {
+ background-color: rgba(255, 255, 255, 0.1);
+ color: white;
+}
+
+.nav-link.active {
+ font-weight: 600;
+}
+
+.sidebar-footer {
+ margin-top: auto;
+}
+
+.btn {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ padding: 0.75rem 1.5rem;
+ border-radius: 6px;
+ font-weight: 500;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ border: none;
+}
+
+.btn-back {
+ background: white;
+ color: var(--dark);
+ width: 100%;
+ margin-bottom: 1rem;
+}
+
+.btn-back:hover {
+ background: var(--gray);
+}
+
+.btn-logout {
+ background: var(--error);
+ color: white;
+ width: 100%;
+}
+
+.btn-logout:hover {
+ background: #c82333;
+}
+
+/* Main Content */
+.main-content {
+ flex: 1;
+ margin-left: 250px;
+ padding: 2rem 1rem 1rem 2rem;
+ min-height: 100vh;
+ overflow-x: auto;
+ position: relative;
+ user-select: text;
+}
 
   main.main-content h1 {
     font-weight: 700;
@@ -238,59 +308,108 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
   /* Tabs */
   .tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-shrink: 0;
+    margin-bottom: 1rem;
   }
   .tabs a {
-    display: inline-block;
-    padding: 0.5rem 1.25rem;
-    border: 2px solid var(--primary);
-    border-radius: 8px;
+    padding: 0.65rem 2.4rem;
+    border-radius: 6px;
+    background: var(--dark);
+    color: white;
+    font-size: 16px;
     font-weight: 600;
-    color: var(--primary);
+    font-family: inherit;
     text-decoration: none;
-    transition: all 0.3s;
+    box-shadow: 0 2px 6px rgba(52, 73, 94, 0.2);
+    transition: all var(--transition);
     user-select: none;
+    letter-spacing: 0.05em;
+    border: none;
   }
   .tabs a.active,
   .tabs a:hover {
-    background-color: var(--primary);
-    color: white;
+    background: var(--light-green);
+    outline-offset: 4px;
+    /* outline: 3px solid var(--accent); */
+    box-shadow: 0 4px 12px var(--accent);
   }
 
   /* Scrollable table container */
   .table-wrapper {
-    flex-grow: 1;
+    /* flex-grow: 1;
     overflow-y: auto;
     box-shadow: 0 4px 12px rgb(0 0 0 / 0.05);
     border-radius: 10px;
+    background: white; */
+
+
     background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(52, 73, 94, 0.1);
+    overflow-x: auto;
+    max-height: 500px;
+    overflow-y: auto;
+    /* margin-top: 0.5rem; */
   }
 
   /* Tables */
   table {
-    width: 100%;
+    /* width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
-    color: #333;
+    color: #333; */
+
+
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    font-size: 1rem;
+    color: var(--sidebar);
+    min-width: 940px;
   }
+
+
   thead tr {
-    background-color: var(--primary);
+    /* background-color: var(--primary);
     color: white;
     font-weight: 600;
     letter-spacing: 0.02em;
     position: sticky;
+    padding-top: -20px;
     top: 0;
-    z-index: 2;
+    z-index: 2; */
+
+
+    background-color: var(--dark);
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: inherit;
+    border-radius: 10px;
+    /* position: fixed; */
   }
+
+
   th, td {
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--gray-light);
-  }
-  th {
+    /* padding: 12px 18px;
+    border-bottom: 1px solid var(--gray-light); */
+
+
+     padding: 0.6rem 0.6rem;
     text-align: left;
+    vertical-align: middle;
+    position: relative;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    font-family: inherit;
   }
+
+  /* th {
+    text-align: left;
+  } */
+
+
   td.comment-cell {
     max-width: 220px;
     white-space: nowrap;
@@ -321,7 +440,7 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
 
   /* Pagination */
   .pagination {
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
     display: flex;
     justify-content: center;
     gap: 0.5rem;
@@ -331,9 +450,9 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
   .pagination a {
     padding: 0.45rem 0.85rem;
     border: 2px solid var(--primary);
-    border-radius: 6px;
+    border-radius: 5px;
     color: var(--primary);
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     transition: all 0.25s ease;
     user-select: none;
@@ -538,23 +657,50 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
 </head>
 <body>
 
-<!-- Sidebar Navigation -->
-<aside class="sidebar" role="navigation" aria-label="Main navigation">
-  <div class="sidebar-logo">
-    <img src="Telesol_logo.jpeg" alt="Telesol Company Logo" />
-  </div>
-  <nav class="sidebar-menu" aria-label="Sidebar menu">
-    <ul>
-      <li><a href="main-menu.php" class="nav-link active" aria-current="page"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-      <li><a href="log_issue.php" class="nav-link"><i class="bi bi-journal-plus"></i> Log Issue</a></li>
-      <li><a href="log_installations.php" class="nav-link"><i class="bi bi-hdd-network"></i> Log Installation</a></li>
-      <li><a href="customer_experience.php" class="nav-link"><i class="bi bi-person-lines-fill"></i> Customer Experience</a></li>
-      <li><a href="field_installations.php" class="nav-link"><i class="bi bi-tools"></i> Field Installations</a></li>
-      <li><a href="#" class="nav-link"><i class="bi bi-funnel"></i> Filters</a></li>
-      <li><a href="#" class="nav-link"><i class="bi bi-journal-text"></i> Reports</a></li>
-    </ul>
-  </nav>
-</aside>
+<!-- Sidebar -->
+ <div class="d-flex">
+   <aside class="sidebar" role="complementary" aria-label="Sidebar navigation">
+     <div class="sidebar-header">
+       <div class="company-logo" aria-hidden="true">
+         <img src="/images/logo/Telesol_logo.jpeg" alt="Company Logo" />
+       </div>
+       <div class="company-slogan">Customer Relationship Management</div>
+     </div>
+     <nav class="nav-menu" role="navigation" aria-label="Main menu">
+       <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'main-menu.php' ? 'active' : '' ?>">
+         <i class="bi bi-list" aria-hidden="true"></i> Menu
+       </a>
+       <a href="log_ticket.php" class="nav-link">
+         <i class="bi bi-journal-plus" aria-hidden="true"></i> Log Ticket
+       </a>
+       <a href="view_tickets.php" class="nav-link">
+         <i class="bi bi-hdd-network" aria-hidden="true"></i> View Tickets
+       </a>
+       <a href="log_installations.php" class="nav-link">
+         <i class="bi bi-journal-plus" aria-hidden="true"></i> Log Installation
+       </a>
+       <a href="view_installations.php" class="nav-link active">
+         <i class="bi bi-hdd-network" aria-hidden="true"></i> View Installations
+       </a>
+       <a href="customer_experience_dashboard.php" class="nav-link">
+         <i class="bi bi-speedometer2" aria-hidden="true"></i> Customer Experience
+       </a>
+       <a href="field_installations.php" class="nav-link">
+         <i class="bi bi-hdd-network" aria-hidden="true"></i> Field Installations
+       </a>
+     </nav>
+     <div class="sidebar-footer">
+       <button class="btn btn-back" type="button" onclick="window.history.back()" aria-label="Go back">
+         <i class="bi bi-arrow-left" aria-hidden="true"></i> Back
+       </button>
+       <form action="logout.php" method="POST">
+         <button type="submit" class="btn btn-logout">
+           <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Logout
+         </button>
+       </form>
+     </div>
+   </aside>
+ </div>
 
 <!-- Main Content -->
 <main class="main-content" role="main">
@@ -570,25 +716,25 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
 
   <section aria-live="polite" aria-relevant="additions removals" class="table-wrapper" tabindex="0">
     <table aria-describedby="installationsDesc" role="grid">
-      <caption id="installationsDesc" style="text-align:left; padding: 0 0 1rem 0; font-weight: 600; color: var(--gray-dark);">
+      <!-- <caption id="installationsDesc" style="text-align:left; padding: 0 0 1rem 0; font-weight: 600; color: var(--gray-dark);">
         List of installations with status and scheduling details.
-      </caption>
+      </caption> -->
       <thead>
         <tr role="row">
           <th>#</th>
           <th>Transaction ID</th>
           <th>Customer Name</th>
           <th>Package</th>
-          <th>Mode of Payment</th>
+          <!-- <th>Mode of Payment</th> -->
           <th>Location</th>
-          <th>Email</th>
+          <!-- <th>Email</th> -->
           <th>Scheduled Date/Time</th>
           <th>Assigned Engineer</th>
-          <th>Schedule</th>
+          <!-- <th>Schedule</th> -->
           <th>Comment</th>
           <th>Status</th>
           <th>Logged By</th>
-          <th>Logged At</th>
+          <!-- <th>Logged At</th> -->
         </tr>
       </thead>
       <tbody>
@@ -607,12 +753,12 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
             <td data-label="Transaction ID" role="gridcell"><?= htmlspecialchars($row['transaction_id']) ?: '<em>n/a</em>'; ?></td>
             <td data-label="Customer Name" role="gridcell"><?= htmlspecialchars($row['customer_name']) ?></td>
             <td data-label="Package" role="gridcell"><?= '$' . number_format((float)$row['amount_paid'], 2) ?></td>
-            <td data-label="Mode of Payment" role="gridcell"><?= htmlspecialchars($row['mode_of_payment']) ?></td>
+            <!-- <td data-label="Mode of Payment" role="gridcell"><?= htmlspecialchars($row['mode_of_payment']) ?></td> -->
             <td data-label="Location" role="gridcell"><?= htmlspecialchars($row['location']) ?></td>
-            <td data-label="Email" role="gridcell"><a href="mailto:<?= htmlspecialchars($row['email']) ?>"><?= htmlspecialchars($row['email']) ?></a></td>
-            <td data-label="Scheduled Date/Time" role="gridcell" title="<?= $scheduled ?? 'Not set'; ?>">
+            <!-- <td data-label="Email" role="gridcell"><a href="mailto:<?= htmlspecialchars($row['email']) ?>"><?= htmlspecialchars($row['email']) ?></a></td> -->
+            <!-- <td data-label="Scheduled Date/Time" role="gridcell" title="<?= $scheduled ?? 'Not set'; ?>">
               <?= $scheduled ?? '<em>Not set</em>'; ?>
-            </td>
+            </td> -->
             <td data-label="Assigned Engineer" role="gridcell">
               <?= $assignedEng ? htmlspecialchars($assignedEng) : '<em>Unassigned</em>'; ?>
             </td>
@@ -637,7 +783,7 @@ $engineers = ['John Smith', 'Alice Johnson', 'Mohamed Ali', 'Sophia Lee'];
               </span>
             </td>
             <td data-label="Logged By" role="gridcell"><?= htmlspecialchars($row['created_by']) ?></td>
-            <td data-label="Logged At" role="gridcell"><?= htmlspecialchars(date("Y-m-d H:i", strtotime($row['created_at']))) ?></td>
+            <!-- <td data-label="Logged At" role="gridcell"><?= htmlspecialchars(date("Y-m-d H:i", strtotime($row['created_at']))) ?></td> -->
           </tr>
         <?php endwhile; endif; ?>
       </tbody>
