@@ -12,68 +12,64 @@ if ($conn->connect_error) die("DB Error: ".htmlspecialchars($conn->connect_error
 
 function esc($str){ return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8'); }
 
-// Create tables if not exists
-$conn->query("
-CREATE TABLE IF NOT EXISTS internal_request (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    department ENUM('Administration','Customer Service','Operations','Sales','Systems and IT','Technology','Transport') DEFAULT 'Administration',
-    requested_by VARCHAR(100) NOT NULL,
-    priority ENUM('Normal','High','Critical') DEFAULT 'Normal',
-    status ENUM('Pending','Approved','Rejected') DEFAULT 'Pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)");
+$errors = [];
+$success = false;
 
-$conn->query("
-CREATE TABLE IF NOT EXISTS internal_request_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    request_id INT NOT NULL,
-    item_name VARCHAR(255) NOT NULL,
-    quantity INT NOT NULL,
-    FOREIGN KEY (request_id) REFERENCES internal_request(id) ON DELETE CASCADE
-)");
-$errors=[]; $success=false;
-
-if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['create_request'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_request'])) {
     $department = $_POST['department'] ?? 'Administration';
     $priority = $_POST['priority'] ?? 'Normal';
+    $requestor_name = trim($_POST['requestor_name'] ?? $username); // fallback to session
+    $purpose = trim($_POST['purpose'] ?? '');
+    $location = trim($_POST['location'] ?? '');
     $items = $_POST['items'] ?? [];
 
-    if(empty($items)) $errors[]="At least one item is required.";
-    else {
+    if (empty($items)) {
+        $errors[] = "At least one item is required.";
+    } else {
         $all_valid = true;
-        foreach($items as $i){
-            if(trim($i['item_name'])==='' || intval($i['quantity'])<=0){
-                $all_valid=false; break;
+        foreach ($items as $i) {
+            if (trim($i['item_name']) === '' || intval($i['quantity']) <= 0) {
+                $all_valid = false;
+                break;
             }
         }
-        if(!$all_valid) $errors[]="All items must have a name and quantity > 0.";
+        if (!$all_valid) $errors[] = "All items must have a name and quantity > 0.";
     }
 
-    if(empty($errors)){
-        $stmt = $conn->prepare("INSERT INTO internal_request (department, requested_by, priority) VALUES (?,?,?)");
-        if($stmt){
-            $stmt->bind_param("sss",$department,$username,$priority);
-            if($stmt->execute()){
+    if (empty($errors)) {
+        $stmt = $conn->prepare("
+            INSERT INTO internal_request 
+            (department, requested_by, requestor_name, purpose, location, priority) 
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+        if ($stmt) {
+            $stmt->bind_param("ssssss", $department, $username, $requestor_name, $purpose, $location, $priority);
+            if ($stmt->execute()) {
                 $request_id = $stmt->insert_id;
-                foreach($items as $i){
-                    $stmt2 = $conn->prepare("INSERT INTO internal_request_items (request_id, item_name, quantity) VALUES (?,?,?)");
-                    $stmt2->bind_param("ssi",$request_id, $i['item_name'], $i['quantity']);
+                foreach ($items as $i) {
+                    $stmt2 = $conn->prepare("INSERT INTO internal_request_items (request_id, item_name, quantity) VALUES (?, ?, ?)");
+                    $stmt2->bind_param("isi", $request_id, $i['item_name'], $i['quantity']);
                     $stmt2->execute();
                     $stmt2->close();
                 }
-                $success=true;
-            } else $errors[]="Failed to create request: ".htmlspecialchars($stmt->error);
+                $success = true;
+            } else {
+                $errors[] = "Failed to create request: " . htmlspecialchars($stmt->error);
+            }
             $stmt->close();
-        } else $errors[]="DB error: ".htmlspecialchars($conn->error);
+        } else {
+            $errors[] = "DB error: " . htmlspecialchars($conn->error);
+        }
     }
 }
 
-// Fetch requests
+// Fetch requests with items concatenated
 $req_result = $conn->query("
-SELECT r.id,r.department,r.requested_by,r.priority,r.status,r.created_at,
-       GROUP_CONCAT(CONCAT(i.item_name,' (',i.quantity,')') SEPARATOR ', ') as items
+SELECT r.id, r.department, r.requested_by, r.requestor_name, r.purpose, r.location, 
+       r.priority, r.status, r.created_at,
+       GROUP_CONCAT(CONCAT(i.item_name, ' (', i.quantity, ')') SEPARATOR ', ') as items
 FROM internal_request r
-LEFT JOIN internal_request_items i ON r.id=i.request_id
+LEFT JOIN internal_request_items i ON r.id = i.request_id
 GROUP BY r.id
 ORDER BY r.id DESC
 ");
@@ -81,15 +77,14 @@ ORDER BY r.id DESC
 $conn->close();
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administration Tasks - Telesol CRM</title>
+    <title>Internal Requisitions - Telesol CRM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root {
             --primary: #083b6e;
@@ -124,7 +119,7 @@ $conn->close();
             font-size: 14px;
         }
 
-        /* Sidebar */
+        /* Sidebar – exactly as provided */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--primary);
@@ -215,115 +210,256 @@ $conn->close();
             margin-right: 8px;
         }
 
+        /* Card styling */
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: none;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
+        /* Status badges */
+        .badge-pending { background: #dc3545; color: white; }
+        .badge-approved { background: #28a745; color: white; }
+        .badge-rejected { background: #6c757d; color: white; }
+        .badge-normal { background: #6c757d; color: white; }
+        .badge-high { background: #f39c12; color: white; }
+        .badge-critical { background: #dc3545; color: white; }
 
+        .table-hover tbody tr:hover {
+            background: #f1f1f1;
+        }
 
-
-
-
-
-
-
-/* body { background:#f5f7fa; }
-.sidebar { width:220px; height:100vh; background:#2c3e50; position:fixed; color:white; }
-.sidebar a { color:white; display:block; padding:0.8rem; text-decoration:none; }
-.sidebar a.active, .sidebar a:hover { background:#3498db; }
-.main-content { margin-left:220px; padding:20px; } */
-.status-Pending { color:#e74c3c; font-weight:bold; }
-.status-InProgress { color:#f39c12; font-weight:bold; }
-.status-Completed { color:#00b44b; font-weight:bold; }
-.card { transition:0.3s; }
-.card:hover { transform:translateY(-3px); box-shadow:0 5px 15px rgba(0,0,0,0.1);}
-</style>
+        .item-row {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .remove-item {
+            margin-top: 8px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Sidebar (unchanged) -->
-    <aside class="sidebar" aria-label="Main navigation">
-        <div class="sidebar-header">
-            <img src="/images/logo/Telesol_logo.jpeg" alt="Telesol Logo" style="max-width: 120px;">
-            <h5>Telesol CRM</h5>
-        </div>
-        <nav class="sidebar-menu">
-            <ul>
-                <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="task_overview.php"><i class="bi bi-ticket-detailed"></i> Task Overview</a></li>
-                <li><a href="internal_request.php" class="active"><i class="bi bi-wrench"></i> Internal Requisitions</a></li>
-                <li><a href="customer_experience_dashboard.php"><i class="bi bi-people"></i> Customer Experience</a></li>
-                <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
-                <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
-                <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
-                <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-            </ul>
-        </nav>
-    </aside>
-
+<!-- Sidebar (unchanged) -->
+<aside class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+        <img src="/images/logo/Telesol_logo.jpeg" alt="Telesol Logo" style="max-width: 120px;">
+        <h5>Telesol CRM</h5>
+    </div>
+    <nav class="sidebar-menu">
+        <ul>
+            <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            <li><a href="task_overview.php"><i class="bi bi-ticket-detailed"></i> Task Overview</a></li>
+            <li><a href="internal_request.php" class="active"><i class="bi bi-wrench"></i> Internal Requisitions</a></li>
+            <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
+            <!-- <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li> -->
+            <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+        </ul>
+    </nav>
+</aside>
 
 <div class="main-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Administration Department</h2>
-        <span>Logged in as <strong><?= esc($username) ?></strong></span>
+    <!-- Header with user -->
+    <div class="header">
+        <h4>Internal Requisitions</h4>
+        <div class="user-info">
+            <i class="bi bi-person-circle"></i> <?= esc($username) ?>
+        </div>
     </div>
 
-
-<div class="card mb-4 p-4">
-    <h4>Request Materials</h4>
-    <form method="post" id="requisitionForm">
-        <div class="row g-3 mb-2">
-            <div class="col-md-4">
-                <label>Department</label>
-                <select class="form-select" name="department">
-                    <option>Administration</option>
-                    <option>Customer Service</option>
-                    <option>Operations</option>
-                    <option>Sales</option>
-                    <option>Systems and IT</option>
-                    <option>Technology</option>
-                    <option>Transport</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label>Priority</label>
-                <select class="form-select" name="priority">
-                    <option selected>Normal</option>
-                    <option>High</option>
-                    <option>Critical</option>
-                </select>
-            </div>
+    <!-- Alert messages -->
+    <?php if (!empty($errors)): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php foreach ($errors as $e): ?>
+                <div><?= esc($e) ?></div>
+            <?php endforeach; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-
-        <div id="itemsContainer">
-            <div class="row g-3 mb-2 itemRow">
-                <div class="col-md-6"><input type="text" name="items[0][item_name]" class="form-control" placeholder="Item Name" required></div>
-                <div class="col-md-3"><input type="number" name="items[0][quantity]" class="form-control" placeholder="Quantity" min="1" required></div>
-                <div class="col-md-3"><button type="button" class="btn btn-danger removeItem">Remove</button></div>
-            </div>
+    <?php elseif ($success): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Requisition submitted successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+    <?php endif; ?>
 
-        <button type="button" class="btn btn-secondary mb-3" id="addItemBtn">Add Another Item</button>
-        <div><button type="submit" name="create_request" class="btn btn-primary">Submit Request</button></div>
-    </form>
+    <!-- Requisition Form Card with new fields -->
+    <div class="card mb-4 p-4">
+        <h4 class="mb-3">Request Materials</h4>
+        <form method="post" id="requisitionForm">
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Department</label>
+                    <select class="form-select" name="department">
+                        <option>Administration</option>
+                        <option>Customer Service</option>
+                        <option>Operations</option>
+                        <option>Sales</option>
+                        <option>Systems and IT</option>
+                        <option>Technology</option>
+                        <option>Transport</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Priority</label>
+                    <select class="form-select" name="priority">
+                        <option>Normal</option>
+                        <option>High</option>
+                        <option>Critical</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Requestor Name</label>
+                    <input type="text" name="requestor_name" class="form-control" value="<?= esc($username) ?>" placeholder="Full name">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Purpose / Description</label>
+                    <textarea name="purpose" class="form-control" rows="2" placeholder="Why is this needed?"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Location</label>
+                    <input type="text" name="location" class="form-control" placeholder="e.g., Store, Office #">
+                </div>
+            </div>
+
+            <div id="itemsContainer">
+                <div class="item-row p-3 mb-3 border rounded">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Item Name</label>
+                            <input type="text" name="items[0][item_name]" class="form-control" placeholder="e.g., Printer Paper" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Quantity</label>
+                            <input type="number" name="items[0][quantity]" class="form-control" placeholder="Qty" min="1" required>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-outline-danger remove-item w-100">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-outline-secondary" id="addItemBtn">
+                    <i class="bi bi-plus-circle"></i> Add Another Item
+                </button>
+                <button type="submit" name="create_request" class="btn btn-primary px-4">
+                    <i class="bi bi-send"></i> Submit Request
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Requisitions List Card (now includes new columns) -->
+    <div class="card p-4">
+        <h4 class="mb-3">Requisition History</h4>
+        <?php if ($req_result && $req_result->num_rows > 0): ?>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Dept</th>
+                            <th>Requestor</th>
+                            <th>Purpose</th>
+                            <th>Location</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Items</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $req_result->fetch_assoc()): 
+                            $priorityClass = '';
+                            if ($row['priority'] == 'High') $priorityClass = 'badge-high';
+                            elseif ($row['priority'] == 'Critical') $priorityClass = 'badge-critical';
+                            else $priorityClass = 'badge-normal';
+
+                            $statusClass = '';
+                            if ($row['status'] == 'Approved') $statusClass = 'badge-approved';
+                            elseif ($row['status'] == 'Rejected') $statusClass = 'badge-rejected';
+                            else $statusClass = 'badge-pending';
+                        ?>
+                        <tr>
+                            <td>#<?= $row['id'] ?></td>
+                            <td><?= esc($row['department']) ?></td>
+                            <td><?= esc($row['requestor_name'] ?: $row['requested_by']) ?></td>
+                            <td><?= esc($row['purpose'] ?: '-') ?></td>
+                            <td><?= esc($row['location'] ?: '-') ?></td>
+                            <td><span class="badge <?= $priorityClass ?>"><?= esc($row['priority']) ?></span></td>
+                            <td><span class="badge <?= $statusClass ?>"><?= esc($row['status']) ?></span></td>
+                            <td><?= esc($row['items']) ?></td>
+                            <td><?= date('d M Y, H:i', strtotime($row['created_at'])) ?></td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <p class="text-muted">No requisitions found.</p>
+        <?php endif; ?>
+    </div>
 </div>
 
+<!-- JavaScript for dynamic items and alerts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-let itemIndex = 1;
-document.getElementById('addItemBtn').addEventListener('click', function(){
+    let itemIndex = 1;
     const container = document.getElementById('itemsContainer');
-    const div = document.createElement('div');
-    div.classList.add('row','g-3','mb-2','itemRow');
-    div.innerHTML = `
-        <div class="col-md-6"><input type="text" name="items[${itemIndex}][item_name]" class="form-control" placeholder="Item Name" required></div>
-        <div class="col-md-3"><input type="number" name="items[${itemIndex}][quantity]" class="form-control" placeholder="Quantity" min="1" required></div>
-        <div class="col-md-3"><button type="button" class="btn btn-danger removeItem">Remove</button></div>
-    `;
-    container.appendChild(div);
-    itemIndex++;
-});
 
-// Remove item row
-document.addEventListener('click', function(e){
-    if(e.target.classList.contains('removeItem')){
-        e.target.closest('.itemRow').remove();
-    }
-});
+    document.getElementById('addItemBtn').addEventListener('click', function() {
+        const newItem = document.createElement('div');
+        newItem.classList.add('item-row', 'p-3', 'mb-3', 'border', 'rounded');
+        newItem.innerHTML = `
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Item Name</label>
+                    <input type="text" name="items[${itemIndex}][item_name]" class="form-control" placeholder="e.g., Printer Paper" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Quantity</label>
+                    <input type="number" name="items[${itemIndex}][quantity]" class="form-control" placeholder="Qty" min="1" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-outline-danger remove-item w-100">Remove</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(newItem);
+        itemIndex++;
+    });
+
+    // Remove item row using event delegation
+    container.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
+            const btn = e.target.closest('.remove-item');
+            const row = btn.closest('.item-row');
+            if (row) {
+                row.remove();
+            }
+        }
+    });
+
+    // Auto-hide alerts after 5 seconds
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 5000);
 </script>
+</body>
+</html>

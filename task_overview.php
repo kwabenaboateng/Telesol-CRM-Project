@@ -401,13 +401,47 @@ if (!$tasks_result) {
         max-height: 250px;
     }
 
-    .badge-low { background: #6c757d; color: white; }
-    .badge-medium { background: #3498db; color: white; }
-    .badge-high { background: #f39c12; color: white; }
-    .badge-critical { background: #e74c3c; color: white; }
-    .badge-pending { background: #dc3545; color: white; }
-    .badge-inprogress { background: #ffc107; color: #212529; }
-    .badge-completed { background: #28a745; color: white; }
+    .badge-low { 
+        /* background: #6c757d;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
+
+    .badge-medium { 
+        /* background: #3498db;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
+
+    .badge-high { 
+        /* background: #f39c12;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
+
+    .badge-critical { 
+        /* background: #e74c3c;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
+
+    .badge-pending { 
+        /* background: #dc3545;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
+
+    .badge-inprogress { 
+        /* background: #ffc107;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
+
+    .badge-completed { 
+        /* background: #28a745;  */
+        color: var(--dark); 
+        font-size: 14px;
+    }
 
     .table-hover tbody tr:hover {
         background: #f1f1f1;
@@ -415,6 +449,7 @@ if (!$tasks_result) {
     .action-btn {
         margin-right: 5px;
         cursor: pointer;
+        font-size: 18px;
     }
     .assignee-badge {
         background-color: #e9ecef;
