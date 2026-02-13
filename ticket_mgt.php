@@ -406,14 +406,16 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-<meta charset="UTF-8" />
-<title>Telesol CRM - View Tickets</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+    <meta charset="UTF-8" />
+    <title>Telesol CRM - View Tickets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+</head>
+
     <style>
         :root {
-            --primary: #2c3e50;
+            --primary: #083b6e;
             --primary-dark: #1e2d3b;
             --secondary: #3498db;
             --success: #00b44bff;
@@ -424,7 +426,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
             --gray: #95a5a6;
             --light-gray: #ddd;
             --sidebar-width: 220px;
-            --background: #d7d7d7;
+            --background: #f5f7fa;
             --purple: #00e5ffff;
             --white: #ffffff;
             --border-radius: 8px;

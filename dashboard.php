@@ -16,30 +16,31 @@ $user_department = $_SESSION['user_department'] ?? '';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Telesol CRM Dashboard</title>
-<meta name="description" content="Telesol CRM Dashboard - Access comprehensive customer feedback and service analytics">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="preload" href="Telesol_logo.jpeg" as="image">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Telesol CRM Dashboard</title>
+  <meta name="description" content="Telesol CRM Dashboard - Access comprehensive customer feedback and service analytics">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="Telesol_logo.jpeg" as="image">
+</head>
 
 <style>
   :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --secondary: #425779;
-    --dark: #263f56;
-    --light: #f8fafc;
-    --background: #d9d9d9;
-    --card-bg: #ffffff;
-    --text: #334155;
-    --text-light: #64748b;
-    --border: #e2e8f0;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
+    --primary: #083b6e;
+    --primary-dark: #1e2d3b;
+    --secondary: #3498db;
+    --success: #00b44bff;
+    --warning: #f39c12;
+    --danger: #e74c3c;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+    --gray: #95a5a6;
+    --light-gray: #ddd;
+    --sidebar-width: 220px;
+    --background: #f5f7fa;
+    --purple: #00e5ffff;
     --white: #ffffff;
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
@@ -515,7 +516,7 @@ $user_department = $_SESSION['user_department'] ?? '';
     <section class="department-grid" aria-label="Departments">
       <?php
         $departments = [
-          ['name' => 'Admin', 'link' => 'adminmenu.php', 'icon' => 'bi-gear-fill', 'desc' => 'System configuration and user management'],
+          ['name' => 'Admin', 'link' => 'admin.php', 'icon' => 'bi-gear-fill', 'desc' => 'System configuration and user management'],
           ['name' => 'Customer Service', 'link' => 'ticket_mgt.php', 'icon' => 'bi-headset', 'desc' => 'Handle customer inquiries and support tickets'],
           ['name' => 'Finance', 'link' => 'csmenu.php', 'icon' => 'bi-cash-stack', 'desc' => 'Billing, payments and financial reports'],
           ['name' => 'Sales', 'link' => 'sales.php', 'icon' => 'bi-graph-up', 'desc' => 'Sales pipeline and customer acquisition'],

@@ -1,0 +1,183 @@
+<?php
+session_start();
+$username = $_SESSION['username'] ?? 'User';
+
+$servername = "localhost";
+$db_username = "root";
+$password_db = "";
+$dbname = "telesol crm";
+
+$conn = new mysqli($servername, $db_username, $password_db, $dbname);
+if ($conn->connect_error) die("DB Error: ".htmlspecialchars($conn->connect_error));
+
+function esc($str){ return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8'); }
+
+// Create tables if not exists
+$conn->query("
+CREATE TABLE IF NOT EXISTS internal_request (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    department ENUM('Administration','Customer Service','Operations','Sales','Systems and IT','Technology','Transport') DEFAULT 'Administration',
+    requested_by VARCHAR(100) NOT NULL,
+    priority ENUM('Normal','High','Critical') DEFAULT 'Normal',
+    status ENUM('Pending','Approved','Rejected') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)");
+
+$conn->query("
+CREATE TABLE IF NOT EXISTS internal_request_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    request_id INT NOT NULL,
+    item_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (request_id) REFERENCES internal_request(id) ON DELETE CASCADE
+)");
+$errors=[]; $success=false;
+
+if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['create_request'])){
+    $department = $_POST['department'] ?? 'Administration';
+    $priority = $_POST['priority'] ?? 'Normal';
+    $items = $_POST['items'] ?? [];
+
+    if(empty($items)) $errors[]="At least one item is required.";
+    else {
+        $all_valid = true;
+        foreach($items as $i){
+            if(trim($i['item_name'])==='' || intval($i['quantity'])<=0){
+                $all_valid=false; break;
+            }
+        }
+        if(!$all_valid) $errors[]="All items must have a name and quantity > 0.";
+    }
+
+    if(empty($errors)){
+        $stmt = $conn->prepare("INSERT INTO internal_request (department, requested_by, priority) VALUES (?,?,?)");
+        if($stmt){
+            $stmt->bind_param("sss",$department,$username,$priority);
+            if($stmt->execute()){
+                $request_id = $stmt->insert_id;
+                foreach($items as $i){
+                    $stmt2 = $conn->prepare("INSERT INTO internal_request_items (request_id, item_name, quantity) VALUES (?,?,?)");
+                    $stmt2->bind_param("ssi",$request_id, $i['item_name'], $i['quantity']);
+                    $stmt2->execute();
+                    $stmt2->close();
+                }
+                $success=true;
+            } else $errors[]="Failed to create request: ".htmlspecialchars($stmt->error);
+            $stmt->close();
+        } else $errors[]="DB error: ".htmlspecialchars($conn->error);
+    }
+}
+
+// Fetch requests
+$req_result = $conn->query("
+SELECT r.id,r.department,r.requested_by,r.priority,r.status,r.created_at,
+       GROUP_CONCAT(CONCAT(i.item_name,' (',i.quantity,')') SEPARATOR ', ') as items
+FROM internal_request r
+LEFT JOIN internal_request_items i ON r.id=i.request_id
+GROUP BY r.id
+ORDER BY r.id DESC
+");
+
+$conn->close();
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administration Tasks - Telesol CRM</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body { background:#f5f7fa; }
+.sidebar { width:220px; height:100vh; background:#2c3e50; position:fixed; color:white; }
+.sidebar a { color:white; display:block; padding:0.8rem; text-decoration:none; }
+.sidebar a.active, .sidebar a:hover { background:#3498db; }
+.main-content { margin-left:220px; padding:20px; }
+.status-Pending { color:#e74c3c; font-weight:bold; }
+.status-InProgress { color:#f39c12; font-weight:bold; }
+.status-Completed { color:#00b44b; font-weight:bold; }
+.card { transition:0.3s; }
+.card:hover { transform:translateY(-3px); box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+</style>
+</head>
+<body>
+
+<div class="sidebar p-3">
+    <h4 class="text-center mb-3">Telesol CRM</h4>
+    <a href="admin.php"<i class="bi bi-card-checklist"></i> Administration Tasks</a>
+    <a href="internal_requisition.php" class="active"><i class="bi bi-box-arrow-in-down"></i> Internal Requisition</a>
+    <a href="#"><i class="bi bi-bar-chart"></i> Reports</a>
+    <a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Administration Department</h2>
+        <span>Logged in as <strong><?= esc($username) ?></strong></span>
+    </div>
+
+
+<div class="card mb-4 p-4">
+    <h4>Request Materials</h4>
+    <form method="post" id="requisitionForm">
+        <div class="row g-3 mb-2">
+            <div class="col-md-4">
+                <label>Department</label>
+                <select class="form-select" name="department">
+                    <option>Administration</option>
+                    <option>Customer Service</option>
+                    <option>Operations</option>
+                    <option>Sales</option>
+                    <option>Systems and IT</option>
+                    <option>Technology</option>
+                    <option>Transport</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>Priority</label>
+                <select class="form-select" name="priority">
+                    <option selected>Normal</option>
+                    <option>High</option>
+                    <option>Critical</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="itemsContainer">
+            <div class="row g-3 mb-2 itemRow">
+                <div class="col-md-6"><input type="text" name="items[0][item_name]" class="form-control" placeholder="Item Name" required></div>
+                <div class="col-md-3"><input type="number" name="items[0][quantity]" class="form-control" placeholder="Quantity" min="1" required></div>
+                <div class="col-md-3"><button type="button" class="btn btn-danger removeItem">Remove</button></div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary mb-3" id="addItemBtn">Add Another Item</button>
+        <div><button type="submit" name="create_request" class="btn btn-primary">Submit Request</button></div>
+    </form>
+</div>
+
+<script>
+let itemIndex = 1;
+document.getElementById('addItemBtn').addEventListener('click', function(){
+    const container = document.getElementById('itemsContainer');
+    const div = document.createElement('div');
+    div.classList.add('row','g-3','mb-2','itemRow');
+    div.innerHTML = `
+        <div class="col-md-6"><input type="text" name="items[${itemIndex}][item_name]" class="form-control" placeholder="Item Name" required></div>
+        <div class="col-md-3"><input type="number" name="items[${itemIndex}][quantity]" class="form-control" placeholder="Quantity" min="1" required></div>
+        <div class="col-md-3"><button type="button" class="btn btn-danger removeItem">Remove</button></div>
+    `;
+    container.appendChild(div);
+    itemIndex++;
+});
+
+// Remove item row
+document.addEventListener('click', function(e){
+    if(e.target.classList.contains('removeItem')){
+        e.target.closest('.itemRow').remove();
+    }
+});
+</script>

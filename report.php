@@ -913,25 +913,24 @@ tbody tr:hover {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<!-- Sidebar -->
-    <aside class="sidebar" aria-label="Main navigation">
-        <div class="sidebar-header">
-            <h1>Telesol CRM</h1>
-        </div>
-
-        <nav class="sidebar-menu">
-            <ul>
-                <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="ticket_mgt.php"><i class="bi bi-ticket-detailed"></i> Ticket Management</a></li>
-                <li><a href="installation_mgt.php"><i class="bi bi-wrench"></i> Installations</a></li>
-                <li><a href="customer_experience_dashboard.php" class="active"><i class="bi bi-people"></i> Customer Experience</a></li>
-                <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
-                <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
-                <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
-                <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-            </ul>
-        </nav>
-    </aside>
+    <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <h1>Telesol CRM</h1>
+    </div>
+    <nav class="sidebar-menu">
+      <ul>
+        <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li><a href="ticket_mgt.php"><i class="bi bi-ticket-detailed"></i> Ticket Management</a></li>
+        <li><a href="installation_mgt.php" class="active"><i class="bi bi-wrench"></i> Installations</a></li>
+        <li><a href="customer_experience_dashboard.php"><i class="bi bi-people"></i> Customer Experience</a></li>
+        <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
+        <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
+        <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
+        <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
 
 <!-- Main Content -->
 <div class="main-content">

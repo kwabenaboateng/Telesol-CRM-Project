@@ -80,7 +80,7 @@ $conn->close();
   /* Card styling */
   .card {
     max-width: 850px;
-    width: 800px;
+    width: 700px;
     margin: auto;
     padding: 1.5rem 2.5rem;
     border-radius: 10px;
@@ -105,7 +105,7 @@ $conn->close();
   form {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
     align-items: flex-start;
   }
 
@@ -119,7 +119,7 @@ $conn->close();
   /* Full width for row container */
   .select-row {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     flex: 1 1 100%;
   }
 
@@ -137,9 +137,9 @@ $conn->close();
 
   .form-control,
   .form-select {
-    border-radius: 10px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    padding: 10px 12px;
+    padding: 6px 8px;
     font-size: 1rem;
     font-family: inherit;
     color: #113563;
@@ -155,7 +155,7 @@ $conn->close();
 
   textarea.form-control {
     resize: none;
-    min-height: 100px;
+    min-height: 80px;
   }
 
   /* Submit button: full width below inputs */
@@ -168,11 +168,11 @@ $conn->close();
   .btn-primary {
     background-color: #0d6efd;
     border-color: #0d6efd;
-    padding: 0.75rem 3.5rem;
+    padding: 0.75rem 2.5rem;
     font-weight: 600;
     border-radius: 50px;
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
     border: none;
