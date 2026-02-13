@@ -516,7 +516,7 @@ $user_department = $_SESSION['user_department'] ?? '';
     <section class="department-grid" aria-label="Departments">
       <?php
         $departments = [
-          ['name' => 'Admin', 'link' => 'admin.php', 'icon' => 'bi-gear-fill', 'desc' => 'System configuration and user management'],
+          ['name' => 'Admin', 'link' => 'task_overview.php', 'icon' => 'bi-gear-fill', 'desc' => 'Daily task management  and administrative duties'],
           ['name' => 'Customer Service', 'link' => 'ticket_mgt.php', 'icon' => 'bi-headset', 'desc' => 'Handle customer inquiries and support tickets'],
           ['name' => 'Finance', 'link' => 'csmenu.php', 'icon' => 'bi-cash-stack', 'desc' => 'Billing, payments and financial reports'],
           ['name' => 'Sales', 'link' => 'sales.php', 'icon' => 'bi-graph-up', 'desc' => 'Sales pipeline and customer acquisition'],

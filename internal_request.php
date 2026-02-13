@@ -86,16 +86,149 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Administration Tasks - Telesol CRM</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body { background:#f5f7fa; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administration Tasks - Telesol CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #083b6e;
+            --primary-dark: #1e2d3b;
+            --secondary: #3498db;
+            --success: #00b44bff;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --light-gray: #ddd;
+            --sidebar-width: 220px;
+            --background: #f5f7fa;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --transition: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary);
+            color: var(--white);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform var(--transition);
+        }
+        
+        .sidebar-header {
+            background: var(--primary);
+            padding: 1rem;
+            text-align: center;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-header img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu ul {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0.2rem 0;
+        }
+        
+        .sidebar-menu a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 0.5rem;
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            transition: background-color var(--transition);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--secondary);
+            border-left: 3px solid var(--white);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+            width: calc(100% - 220px);
+        }
+
+        .header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 10px 20px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: var(--border-radius);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+        }
+
+        .user-info i {
+            margin-right: 8px;
+        }
+
+
+
+
+
+
+
+
+
+
+/* body { background:#f5f7fa; }
 .sidebar { width:220px; height:100vh; background:#2c3e50; position:fixed; color:white; }
 .sidebar a { color:white; display:block; padding:0.8rem; text-decoration:none; }
 .sidebar a.active, .sidebar a:hover { background:#3498db; }
-.main-content { margin-left:220px; padding:20px; }
+.main-content { margin-left:220px; padding:20px; } */
 .status-Pending { color:#e74c3c; font-weight:bold; }
 .status-InProgress { color:#f39c12; font-weight:bold; }
 .status-Completed { color:#00b44b; font-weight:bold; }
@@ -105,13 +238,26 @@ body { background:#f5f7fa; }
 </head>
 <body>
 
-<div class="sidebar p-3">
-    <h4 class="text-center mb-3">Telesol CRM</h4>
-    <a href="admin.php"<i class="bi bi-card-checklist"></i> Administration Tasks</a>
-    <a href="internal_requisition.php" class="active"><i class="bi bi-box-arrow-in-down"></i> Internal Requisition</a>
-    <a href="#"><i class="bi bi-bar-chart"></i> Reports</a>
-    <a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
-</div>
+    <!-- Sidebar (unchanged) -->
+    <aside class="sidebar" aria-label="Main navigation">
+        <div class="sidebar-header">
+            <img src="/images/logo/Telesol_logo.jpeg" alt="Telesol Logo" style="max-width: 120px;">
+            <h5>Telesol CRM</h5>
+        </div>
+        <nav class="sidebar-menu">
+            <ul>
+                <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a href="task_overview.php"><i class="bi bi-ticket-detailed"></i> Task Overview</a></li>
+                <li><a href="internal_request.php" class="active"><i class="bi bi-wrench"></i> Internal Requisitions</a></li>
+                <li><a href="customer_experience_dashboard.php"><i class="bi bi-people"></i> Customer Experience</a></li>
+                <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
+                <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
+                <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
 
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
