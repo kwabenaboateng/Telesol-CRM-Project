@@ -176,68 +176,68 @@ function esc($str) {
   }
 
   /* Reset and base styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
 
-    body {
-      background-color: var(--background);
-      color: var(--dark);
-      display: flex;
-      min-height: 100vh;
-      font-size: 14px;
-    }
+  body {
+    background-color: var(--background);
+    color: var(--dark);
+    display: flex;
+    min-height: 100vh;
+    font-size: 14px;
+  }
 
-    /* Sidebar */
-    .sidebar {
-      width: var(--sidebar-width);
-      background-color: var(--primary);
-      color: var(--white);
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-      z-index: 1000;
-      transition: transform var(--transition);
-    }
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--primary);
+    color: var(--white);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: transform var(--transition);
+  }
 
-    .sidebar-header {
-      background: var(--primary);
-      padding: 0.5rem;
-      text-align: center;
-      font-weight: 300;
-      font-size: 0.8rem;
-      font-family: inherit;
-      letter-spacing: 0.5px;
-    }
+  .sidebar-header {
+    background: var(--primary);
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 300;
+    font-size: 0.8rem;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+  }
 
-    .sidebar-menu ul {
-      list-style: none;
-      padding: 1rem 0;
-    }
+  .sidebar-menu ul {
+    list-style: none;
+    padding: 1rem 0;
+  }
 
-    .sidebar-menu li {
-      margin: 0.2rem 0;
-    }
+  .sidebar-menu li {
+    margin: 0.2rem 0;
+  }
 
-    .sidebar-menu a {
-      color: var(--white);
-      text-decoration: none;
-      padding: 0.6rem 0.6rem;
-      display: block;
-      font-size: 14px;
-      font-weight: 400;
-      font-family: inherit;
-      transition: background-color var(--transition);
-    }
+  .sidebar-menu a {
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.6rem 0.6rem;
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: inherit;
+    transition: background-color var(--transition);
+  }
 
-    .sidebar-menu a:hover,
-    .sidebar-menu a.active {
-      background-color: var(--secondary);
-      border-left: 3px solid var(--white);
-    }
+  .sidebar-menu a:hover,
+  .sidebar-menu a.active {
+    background-color: var(--secondary);
+    border-left: 3px solid var(--white);
+  }
 
     .sidebar-menu i {
       margin-right: 10px;
@@ -255,6 +255,36 @@ function esc($str) {
     }
 
     .header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 10px 20px;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-radius: var(--border-radius);
+    }
+
+    .user-info {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+        }
+
+        .user-info i {
+            margin-right: 8px;
+        }
+
+
+
+
+    /* .header {
       background-color: var(--white);
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       padding: 0.45rem 1rem;
@@ -312,7 +342,7 @@ function esc($str) {
     .user-session i {
       font-size: 1.2rem;
       color: var(--dark);
-    }
+    } */
 
     /* Quick action buttons */
     .quick-actions {
@@ -1200,8 +1230,16 @@ function esc($str) {
 
   <!-- Main Content -->
   <main class="main-content">
+    <!-- Header with user -->
+    <div class="header">
+      <h4>Internal Requisitions</h4>
+      <div class="user-info">
+        <i class="bi bi-person-circle"></i> <?= esc($username) ?>
+      </div>
+    </div>
+
     <!-- Header -->
-    <header class="header">
+    <!-- <header class="header">
       <div class="navbar-search" role="search" aria-label="Search tickets">
         <input
           type="search"
@@ -1216,13 +1254,13 @@ function esc($str) {
         />
         
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.53 20.47l-4.96-4.96A7.44 7.44 0 0 0 18 10.5 7.5 7.5 0 1 0 10.5 18a7.44 7.44 0 0 0 5.01-1.43l4.96 4.96a.75.75 0 0 0 1.06-1.06zM10.5 16.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>
-      </div>
+      </div> -->
 
-      <div class="user-session">
+      <!-- <div class="user-session">
         <i class="bi bi-person-circle"></i>
         <span>Logged in as: <strong><?= esc($username) ?></strong></span>
       </div>
-    </header>
+    </header> -->
 
     <!-- Page Content -->
     <div class="page-content">
