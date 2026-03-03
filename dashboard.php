@@ -42,6 +42,7 @@ $user_department = $_SESSION['user_department'] ?? '';
     --background: #f5f7fa;
     --purple: #00e5ffff;
     --white: #ffffff;
+    --border-radius: 8px;
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --transition: all 0.3s ease;
@@ -517,7 +518,7 @@ $user_department = $_SESSION['user_department'] ?? '';
       <?php
         $departments = [
           ['name' => 'Admin', 'link' => 'task_overview.php', 'icon' => 'bi-gear-fill', 'desc' => 'Daily task management  and administrative duties'],
-          ['name' => 'Customer Service', 'link' => 'ticket_mgt.php', 'icon' => 'bi-headset', 'desc' => 'Handle customer inquiries and support tickets'],
+          ['name' => 'Customer Service', 'link' => 'csdashboard.php', 'icon' => 'bi-headset', 'desc' => 'Handle customer inquiries and support tickets'],
           ['name' => 'Finance', 'link' => 'csmenu.php', 'icon' => 'bi-cash-stack', 'desc' => 'Billing, payments and financial reports'],
           ['name' => 'Sales', 'link' => 'sales.php', 'icon' => 'bi-graph-up', 'desc' => 'Sales pipeline and customer acquisition'],
           ['name' => 'Systems', 'link' => 'system.php', 'icon' => 'bi-server', 'desc' => 'Infrastructure and network management'],

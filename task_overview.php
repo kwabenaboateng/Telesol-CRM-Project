@@ -365,7 +365,7 @@ if (!$tasks_result) {
     .metric-card {
         background: var(--white);
         border-radius: var(--border-radius);
-        padding: 1.2rem;
+        padding: 1rem;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         transition: var(--transition);
         border-left: 4px solid transparent;
@@ -380,7 +380,8 @@ if (!$tasks_result) {
     .metric-card.danger { border-left-color: var(--danger); }
     .metric-card .title {
         font-size: 0.9rem;
-        color: var(--gray);
+        font-weight: 500;
+        color: var(--primary);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -481,10 +482,7 @@ if (!$tasks_result) {
             <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
             <li><a href="task_overview.php" class="active"><i class="bi bi-ticket-detailed"></i> Task Overview</a></li>
             <li><a href="internal_request.php"><i class="bi bi-wrench"></i> Internal Requisitions</a></li>
-            <li><a href="customer_experience_dashboard.php"><i class="bi bi-people"></i> Customer Experience</a></li>
             <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
-            <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
-            <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
             <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
         </ul>
     </nav>
@@ -688,26 +686,27 @@ if (!$tasks_result) {
                 <div class="value"><?= $completed ?></div>
             </div>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <div class="metric-card danger">
                 <div class="title">High/Critical</div>
                 <div class="value"><?= $high_critical ?></div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Charts Row -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="chart-container">
-                <h5>Tasks per Assigned Person</h5>
-                <canvas id="assignedChart"></canvas>
-            </div>
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="chart-container">
                 <h5>Task Status Distribution</h5>
                 <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="chart-container">
+                <h5>Tasks per Assigned Person</h5>
+                <canvas id="assignedChart"></canvas>
             </div>
         </div>
     </div>

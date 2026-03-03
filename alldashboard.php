@@ -81,19 +81,27 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard - Telesol CRM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
     <style>
 
         :root {
-            --primary: #2c3e50;
+            --primary: #083b6e;
+            --primary-dark: #1e2d3b;
             --secondary: #3498db;
-            --success: #2ecc71;
+            --success: #00b44bff;
             --warning: #f39c12;
             --danger: #e74c3c;
             --light: #ecf0f1;
             --dark: #2c3e50;
             --gray: #95a5a6;
-            --sidebar-width: 250px;
+            --light-gray: #ddd;
+            --sidebar-width: 240px;
             --background: #f5f7fa;
+            --purple: #00e5ffff;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --transition: 0.3s ease;
         }
         
         * {
@@ -104,76 +112,17 @@ $conn->close();
         }
         
         body {
-            background-color: #f5f7fa;
+            color: var(--primary);
+            background-color: var(--background);
             color: #333;
             display: flex;
             min-height: 100vh;
         }
-        
-        /* Fixed Sidebar Styles */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--primary);
-            color: white;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        
-        .sidebar-header {
-            padding: 20px;
-            background: var(--dark);
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 101;
-        }
-        
-        .sidebar-menu {
-            padding: 10px 0;
-        }
-        
-        .sidebar-menu ul {
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            margin: 5px 0;
-        }
-        
-        .sidebar-menu a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            padding: 12px 20px;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-menu a:hover, .sidebar-menu a.active {
-            background: var(--secondary);
-            border-left: 4px solid white;
-        }
-        
-        .sidebar-menu i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
+
         /* Header Styles */
         .header {
-            background: white;
+            color: var(--white);
+            background-color: var(---primary);
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
@@ -232,16 +181,16 @@ $conn->close();
             align-items: center;
             margin-bottom: 15px;
         }
-        
+
         .card-title {
             font-size: 16px;
             font-weight: 600;
-            color: var(--dark);
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
+
         .card-icon {
             width: 40px;
             height: 40px;
@@ -251,85 +200,23 @@ $conn->close();
             justify-content: center;
             color: white;
         }
-        
+
         .bg-primary { background: var(--primary); }
         .bg-success { background: var(--success); }
         .bg-warning { background: var(--warning); }
         .bg-danger { background: var(--danger); }
-        
+
         .card-value {
             font-size: 28px;
             font-weight: 700;
             margin: 10px 0;
         }
-        
+
         .card-text {
             color: var(--gray);
             font-size: 14px;
         }
-        
-        /* Table Styles */
-        .table-container {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: var(--dark);
-            position: sticky;
-            top: 0;
-        }
-        
-        tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
-            text-align: center;
-            min-width: 90px;
-        }
-        
-        .status-new {
-            background: #e3f2fd;
-            color: var(--secondary);
-        }
-        
-        .status-in-progress {
-            background: #fff8e1;
-            color: var(--warning);
-        }
-        
-        .status-resolved {
-            background: #e8f5e9;
-            color: var(--success);
-        }
-        
-        .status-pending {
-            background: #ffebee;
-            color: var(--danger);
-        }
-        
+
         .btn {
             padding: 8px 15px;
             border-radius: 4px;
@@ -338,21 +225,21 @@ $conn->close();
             font-weight: 500;
             transition: all 0.3s;
         }
-        
+
         .btn-primary {
             background: var(--secondary);
             color: white;
         }
-        
+
         .btn-primary:hover {
             background: #2980b9;
         }
-        
+
         .btn-sm {
             padding: 5px 10px;
             font-size: 12px;
         }
-        
+
         /* Filter Section */
         .filter-section {
             background: white;
@@ -365,126 +252,24 @@ $conn->close();
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        
+
         .filter-group {
             display: flex;
             flex-direction: column;
         }
-        
+
         .filter-group label {
             font-size: 12px;
             margin-bottom: 5px;
             color: var(--gray);
         }
-        
+
         select, input {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        
-        /* Engineer Cards */
-        .engineer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        .engineer-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-        
-        .engineer-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .engineer-header {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            background: var(--primary);
-            color: white;
-        }
-        
-        .engineer-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            border: 3px solid rgba(255,255,255,0.3);
-        }
-        
-        .engineer-info h3 {
-            margin-bottom: 5px;
-        }
-        
-        .engineer-info p {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-        
-        .engineer-stats {
-            display: flex;
-            background: #f8f9fa;
-            padding: 10px;
-            justify-content: space-around;
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: var(--gray);
-        }
-        
-        .engineer-tasks {
-            padding: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .task-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .task-item:last-child {
-            border-bottom: none;
-        }
-        
-        .task-title {
-            font-weight: 500;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .task-type {
-            font-size: 12px;
-            color: var(--gray);
-            background: #f1f1f1;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-        
-        .task-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--gray);
-        }
-        
+
         /* Mobile menu button */
         .mobile-menu-btn {
             display: none;
@@ -559,8 +344,6 @@ $conn->close();
                 align-items: flex-start;
             }
         }
-    
-        /* <?php include 'styles.css'; /* Extracted CSS below can be saved in styles.css */ ?> */
     </style>
 </head>
 <body>

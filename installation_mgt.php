@@ -255,9 +255,12 @@ function esc($str) {
     }
 
     .header {
+      padding: 0.45rem 1rem;
+      display: flex;
       background: var(--primary);
       color: var(--white);
-      padding: 10px 20px;
+      /* padding: 10px 20px; */
+      margin-top: 15px;
       margin-bottom: 2rem;
       display: flex;
       justify-content: space-between;
@@ -270,16 +273,16 @@ function esc($str) {
     }
 
     .user-info {
-            display: flex;
-            align-items: center;
-            background: rgba(255,255,255,0.2);
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-        }
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.2);
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+    }
 
-        .user-info i {
-            margin-right: 8px;
-        }
+    .user-info i {
+      margin-right: 8px;
+    }
 
 
 
@@ -605,22 +608,23 @@ function esc($str) {
     /* Filters */
     .filters-container {
       display: flex;
+      gap: 0.4rem;
       flex-wrap: wrap;
-      gap: 1rem;
+      /* padding: 1rem 1rem 0; */
       margin-left: -0.3rem;
-      margin-top: -0.9rem;
       margin-bottom: 1rem;
+      margin-top: -2.5rem;
       align-items: center;
     }
 
     .filter-tabs {
       display: flex;
-      gap: 0.3rem;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
 
     .filter-tab {
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.2rem;
       border-radius: 4px;
       background: var(--white);
       color: var(--dark);
@@ -647,7 +651,7 @@ function esc($str) {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.2rem;
       background-color: var(--success);
       color: white;
       border-radius: 4px;
@@ -657,7 +661,7 @@ function esc($str) {
     }
 
     .new-installation-btn:hover {
-      background-color: #27ae60;
+      background-color: #197a40;
       transform: translateY(-2px);
     }
 
@@ -705,7 +709,7 @@ function esc($str) {
     }
     
     th {
-      padding: 0.6rem;
+      padding: 0.8rem;
       font-weight: 500;
       font-size: 0.9rem;
       text-align: center;
@@ -723,7 +727,7 @@ function esc($str) {
     }
     
     td {
-      padding: 0.25rem;
+      padding: 0.5rem;
       vertical-align: middle;
     }
     
@@ -745,7 +749,7 @@ function esc($str) {
       display: inline-block;
       padding: 0.2rem 0.6rem;
       border-radius: 50px;
-      font-size: 0.75rem;
+      font-size: 0.9rem;
       font-weight: 600;
       text-transform: uppercase;
     }
@@ -769,7 +773,7 @@ function esc($str) {
     .btn-icon-action {
       background: none;
       border: none;
-      font-size: 1.05rem;
+      font-size: 1.2rem;
       color: var(--dark);
       cursor: pointer;
       border-radius: var(--border-radius);
@@ -816,7 +820,7 @@ function esc($str) {
       padding: 0.3rem 0.7rem;
       border-radius: var(--border-radius);
       border: 1px solid var(--light-gray);
-      color: var(--dark);
+      color: var(--primary);
       text-decoration: none;
       min-width: 40px;
       font-weight: 500;
@@ -1220,8 +1224,8 @@ function esc($str) {
         <li><a href="ticket_mgt.php"><i class="bi bi-ticket-detailed"></i> Ticket Management</a></li>
         <li><a href="installation_mgt.php" class="active"><i class="bi bi-wrench"></i> Installations</a></li>
         <li><a href="customer_experience_dashboard.php"><i class="bi bi-people"></i> Customer Experience</a></li>
+        <li><a href="internal_request_form.php"><i class="bi bi-wrench"></i> Internal Requisition</a></li>
         <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
-        <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
         <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
         <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
       </ul>
@@ -1237,30 +1241,6 @@ function esc($str) {
         <i class="bi bi-person-circle"></i> <?= esc($username) ?>
       </div>
     </div>
-
-    <!-- Header -->
-    <!-- <header class="header">
-      <div class="navbar-search" role="search" aria-label="Search tickets">
-        <input
-          type="search"
-          name="search"
-          id="searchInput"
-          placeholder="Search installations by customer name, phone no."
-          value="<?= esc($search_term) ?>"
-          aria-describedby="searchHelp"
-          autocomplete="off"
-          aria-autocomplete="list"
-          aria-controls="searchResults"
-        />
-        
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.53 20.47l-4.96-4.96A7.44 7.44 0 0 0 18 10.5 7.5 7.5 0 1 0 10.5 18a7.44 7.44 0 0 0 5.01-1.43l4.96 4.96a.75.75 0 0 0 1.06-1.06zM10.5 16.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>
-      </div> -->
-
-      <!-- <div class="user-session">
-        <i class="bi bi-person-circle"></i>
-        <span>Logged in as: <strong><?= esc($username) ?></strong></span>
-      </div>
-    </header> -->
 
     <!-- Page Content -->
     <div class="page-content">
@@ -1302,10 +1282,10 @@ function esc($str) {
                 <th>Customer</th>
                 <th>Package</th>
                 <th>Location</th>
-                <!-- <th>Scheduled</th> -->
+                <th>Scheduled</th>
                 <!-- <th>Engineer</th> -->
                 <th>Status</th>
-                <th>Logged By</th>
+                <!-- <th>Logged By</th> -->
                 <th>Actions</th>
               </tr>
             </thead>
@@ -1329,10 +1309,10 @@ function esc($str) {
                 <td><?= esc($row['customer_name']) ?></td>
                 <td>$<?= number_format((float)$row['amount_paid'], 2) ?></td>
                 <td><?= esc($row['location']) ?></td>
-                <!-- <td><?= esc($scheduled) ?></td> -->
+                <td><?= esc($scheduled) ?></td>
                 <!-- <td><?= esc($row['assigned_engineer']) ?: 'Unassigned' ?></td> -->
                 <td><span class="status-badge <?= $statusClass ?>"><?= esc($row['installation_status']) ?></span></td>
-                <td><?= esc($row['created_by']) ?></td>
+                <!-- <td><?= esc($row['created_by']) ?></td> -->
                 <td>
                   <div class="actions">
                     <button class="btn-icon-action btn-view" title="View Details"

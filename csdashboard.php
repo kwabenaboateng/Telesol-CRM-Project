@@ -81,7 +81,7 @@ $conn->close();
             --dark: #2c3e50;
             --gray: #95a5a6;
             --light-gray: #ddd;
-            --sidebar-width: 220px;
+            --sidebar-width: 240px;
             --background: #f5f7fa;
             --white: #ffffff;
             --border-radius: 8px;
@@ -205,7 +205,7 @@ $conn->close();
             gap: 1rem;
         }
 
-        .dark-mode-toggle {
+        /* .dark-mode-toggle {
             cursor: pointer;
             background: var(--secondary);
             border: none;
@@ -217,11 +217,11 @@ $conn->close();
             align-items: center;
             gap: 0.5rem;
             transition: background-color var(--transition);
-        }
+        } */
 
-        .dark-mode-toggle:hover {
+        /* .dark-mode-toggle:hover {
             background: var(--primary-dark);
-        }
+        } */
 
         .logout-link {
             color: var(--dark);
@@ -442,12 +442,12 @@ $conn->close();
         </div>
         <nav class="sidebar-menu">
             <ul>
-                <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Main Menu</a></li>
+                <li><a href="customer_service_dashboard.php" class="active"><i class="bi bi-headset"></i> Customer Service</a></li>
                 <li><a href="ticket_mgt.php"><i class="bi bi-ticket-detailed"></i> Ticket Management</a></li>
                 <li><a href="installation_mgt.php"><i class="bi bi-wrench"></i> Installations</a></li>
-                <li><a href="customer_service_dashboard.php" class="active"><i class="bi bi-headset"></i> Customer Service</a></li>
+                <li><a href="internal_request_form.php"><i class="bi bi-wrench"></i> Internal Requisition</a></li>
                 <li><a href="reports.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
-                <li><a href="settings.php"><i class="bi bi-gear"></i> Settings</a></li>
                 <li><a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
             </ul>
         </nav>

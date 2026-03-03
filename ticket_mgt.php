@@ -528,7 +528,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         .header {
             background-color: var(--white);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 0.45rem 1rem;
+            padding: 1rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -547,7 +547,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
 
         .navbar-search input[type="search"] {
             width: 100%;
-            height: 23px;
+            height: 35px;
             font-size: 0.9rem;
             border-radius: 3px;
             outline-offset: 2px;
@@ -557,7 +557,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
 
         .navbar-search input::placeholder {
             opacity: 1;
-            font-size: 12.5px;
+            font-size: 14px;
             padding-top: -5px;
             color: var(--dark);
             padding-bottom: -3px;
@@ -567,8 +567,8 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
             position: absolute;
             top: 50%;
             left: 0.4rem;
-            width: 14px;
-            height: 14px;
+            width: 20px;
+            height: 20px;
             fill: var(--dark);
             pointer-events: none;
             transform: translateY(-50%);
@@ -598,8 +598,8 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         .quick-action-btn {
             display: flex;
             align-items: center;
-            gap: 0.2rem;
-            padding: 0.4rem 0.6rem;
+            gap: 0.4rem;
+            padding: 0.7rem 1.6rem;
             background-color: var(--dark);
             border-radius: 3px;
             color: var(--white);
@@ -611,7 +611,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         }
 
         .quick-action-btn i {
-            font-size: 0.75rem;
+            font-size: 1.2rem;
         }
 
         .quick-action-btn:hover {
@@ -644,21 +644,21 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         /* Table container */
         .table-container {
             margin: 0.6rem;
-            margin-bottom: 0.2rem;
+            margin-bottom: 1rem;
             margin-left: 1.5rem;
             margin-right: 1.5rem;
             background-color: var(--white);
             border-radius: 2px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             overflow-x: auto;
-            height: 480px;
+            height: 600px;
         }
 
         table {
             width: 100%;
             height: 100%;
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 1rem;
             color: var(--dark);
             border-collapse: collapse;
             min-width: 900px;
@@ -677,7 +677,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
             padding: 0.8rem;
             text-align: center;
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             text-transform: initial;
             color: var(--white);
         }
@@ -687,7 +687,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
             border-bottom: 1px solid var(--light-gray);
             text-align: left;
             vertical-align: middle;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 500;
         }
 
@@ -698,7 +698,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         tbody tr.no-data td {
             text-align: center;
             font-style: italic;
-            color: var(--gray);
+            color: var(--dark);
         }
 
         tbody tr.overdue {
@@ -707,31 +707,28 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
 
         /* Status badges */
         .status-badge {
-            font-size: 0.7rem;
+            font-size: 0.9rem;
             text-align: center;
             align-items: center;
             border-radius: 50px;
             display: inline-block;
-            padding: 0.2rem 0.1rem;
+            padding: 0.4rem 0.4rem;
             text-transform: uppercase;
             min-width: 80px;
         }
 
         .status-badge.resolved {
             color: white;
-            font-size: 0.7rem;
-            font-weight: 500;/* 
-            align-items: center;
-            padding-top: 0.10rem;
-            padding-bottom: 0.12rem; */
+            font-size: 0.8rem;
+            font-weight: 500;
             background-color: var(--success);
         }
 
         .status-badge.pending {
-            background-color: #ffe180;
-            color: #634a00;
-            font-size: 0.7rem;
+            color: white;
+            font-size: 0.8rem;
             font-weight: 500;
+            background-color: var(--warning);
         }
 
         .status-badge.overdue {
@@ -749,7 +746,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         .btn-icon-action {
             background: none;
             border: none;
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: var(--primary);
             cursor: pointer;
             border-radius: var(--border-radius);
@@ -760,8 +757,8 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
 
         .btn-icon-action:hover,
         .btn-icon-action:focus {
-            color: #0013a5;
-            background-color: #eef6ff;
+            color: var(--primary);
+            /* background-color: #eef6ff; */
             outline: none;
         }
 
@@ -769,8 +766,8 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 0.25rem;
-            padding: 0.2rem;
+            gap: 0.4rem;
+            padding: 0.4rem;
             flex-wrap: wrap;
             padding-top: 0.4rem;
         }
@@ -778,7 +775,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         .pagination a,
         .pagination span {
             display: inline-block;
-            padding: 0.2rem 0.2rem;
+            padding: 0.5rem 0.5rem;
             border-radius: var(--border-radius);
             border: 1px solid var(--light-gray);
             color: var(--dark);
@@ -790,20 +787,18 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         }
 
         .pagination a:hover {
-            background-color: var(--primary-dark);
-            color: white;
-            border-color: var(--primary-dark);
+            background-color: var(--primary);
+            color: var(--white);
         }
 
         .pagination a.active {
-            background-color: var(--secondary);
-            color: white;
-            border-color: var(--secondary);
+            background-color: var(--primary);
+            color: var(--white);
             pointer-events: none;
         }
 
         .pagination span {
-            color: var(--gray);
+            color: var(--primary);
             pointer-events: none;
             user-select: none;
         }
@@ -811,7 +806,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
         /* Floating add button bottom right */
         .floating-action {
             position: fixed;
-            top: 39rem;
+            top: 52rem;
             bottom: 0.4rem;
             right: 2rem;
             width: 40px;
@@ -1208,7 +1203,7 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
     </style>
 </head>
 <body>
-   <!-- Sidebar -->
+    <!-- Sidebar -->
     <aside class="sidebar" aria-label="Main navigation">
         <div class="sidebar-header">
             <h1>Telesol CRM</h1>
@@ -1219,8 +1214,8 @@ $total_pages = $total_results > 0 ? ceil($total_results / $limit) : 1;
                 <li><a href="ticket_mgt.php" class="active"><i class="bi bi-ticket-detailed"></i> Tickets</a></li>
                 <li><a href="installation_mgt.php"><i class="bi bi-wrench"></i> Installations</a></li>
                 <li><a href="customer_experience_dashboard.php"><i class="bi bi-people"></i> Customer Experience</a></li>
+                <li><a href="cs_internal_request_form.php"><i class="bi bi-wrench"></i> Internal Requisition</a></li>
                 <li><a href="report.php"><i class="bi bi-bar-chart"></i> Reports</a></li>
-                <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
                 <li><a href="#"><i class="bi bi-arrow-left-circle"></i> Back</a></li>
                 <li><a href="login.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
             </ul>
